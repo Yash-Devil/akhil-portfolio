@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Github, Linkedin, Twitter, Dribbble, ArrowUpRight } from "lucide-react";
 import { Container } from "@/shared/ui";
 import { NAV_LINKS } from "@/constants";
@@ -18,15 +19,21 @@ export function Footer() {
         <div className="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr]">
           {/* Brand */}
           <div className="flex flex-col gap-4">
-            <Link href="#hero" className="flex items-center gap-2 font-display text-lg font-semibold">
-              <span className="grid h-8 w-8 place-items-center rounded-lg bg-accent-gradient text-sm font-bold text-white">
-                AG
+            <Link href="/#hero" className="flex items-center gap-2 font-display text-lg font-semibold">
+              <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full shadow-glow-sm ring-2 ring-accent/20">
+                <Image
+                  src="/images/profile/akhil.png"
+                  alt="Akhil Gupta"
+                  fill
+                  sizes="36px"
+                  className="object-cover"
+                />
               </span>
               {siteConfig.name}
             </Link>
             <p className="max-w-xs text-fluid-sm leading-relaxed text-ink-muted">
-              {siteConfig.role} building scalable mobile apps, web platforms, and
-              premium SaaS products for clients worldwide.
+              {siteConfig.title} of {siteConfig.company.name} — building scalable mobile
+              apps, web platforms, and premium SaaS products for clients worldwide.
             </p>
             <div className="flex gap-3">
               {socials.map(({ icon: Icon, href, label }) => (

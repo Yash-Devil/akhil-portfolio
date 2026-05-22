@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { NAV_LINKS } from "@/constants";
@@ -38,33 +39,43 @@ export function Navbar() {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
-      className="fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4"
+      className="fixed inset-x-0 top-0 z-50 pt-4"
     >
+      {/* Same max-width + gutters as every Section's Container, so the navbar
+          aligns perfectly with the page content below it. */}
+      <div className="relative mx-auto w-full max-w-container container-px">
       <nav
         className={cn(
-          "flex w-full max-w-container items-center justify-between rounded-2xl px-4 py-3 transition-all duration-300 sm:px-6",
+          "flex w-full items-center justify-between rounded-2xl px-4 py-3 transition-all duration-300 sm:px-5",
           scrolled
             ? "glass-panel shadow-[0_8px_30px_-12px_rgba(15,42,36,0.18)]"
             : "border border-transparent"
         )}
       >
         <Link
-          href="#hero"
+          href="/#hero"
           className="flex items-center gap-2 font-display text-lg font-semibold tracking-tight"
         >
-          <span className="grid h-8 w-8 place-items-center rounded-lg bg-accent-gradient text-sm font-bold text-white">
-            AG
+          <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full shadow-glow-sm ring-2 ring-accent/20">
+            <Image
+              src="/images/profile/akhil.png"
+              alt="Akhil Gupta"
+              fill
+              sizes="36px"
+              className="object-cover"
+              priority
+            />
           </span>
           <span className="hidden sm:inline">{siteConfig.name}</span>
         </Link>
 
         {/* Desktop links */}
-        <ul className="hidden items-center gap-1 md:flex">
+        <ul className="hidden items-center gap-1 lg:flex">
           {NAV_LINKS.map((link) => (
             <li key={link.href}>
               <Link
                 href={link.href}
-                className="rounded-full px-4 py-2 text-fluid-sm text-ink-muted transition-colors hover:text-ink"
+                className="rounded-full px-3.5 py-2 text-fluid-sm text-ink-muted transition-colors hover:text-ink"
               >
                 {link.label}
               </Link>
@@ -72,15 +83,15 @@ export function Navbar() {
           ))}
         </ul>
 
-        <div className="hidden md:block">
-          <Button href="#contact" size="md">
+        <div className="hidden lg:block">
+          <Button href="/#contact" size="md">
             Let&apos;s Talk
           </Button>
         </div>
 
         {/* Mobile toggle */}
         <button
-          className="grid h-10 w-10 place-items-center rounded-xl border border-hairline text-ink md:hidden"
+          className="grid h-10 w-10 place-items-center rounded-xl border border-hairline text-ink lg:hidden"
           onClick={() => setOpen((v) => !v)}
           aria-label={open ? "Close menu" : "Open menu"}
         >
@@ -88,7 +99,7 @@ export function Navbar() {
         </button>
       </nav>
 
-      {/* Mobile sheet */}
+      {/* Mobile sheet — insets match the container gutters so it lines up with the bar */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -96,7 +107,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.25 }}
-            className="absolute inset-x-4 top-20 z-40 rounded-2xl glass-panel p-4 md:hidden"
+            className="absolute inset-x-5 top-[calc(100%+0.6rem)] z-40 rounded-2xl glass-panel p-4 sm:inset-x-8 lg:hidden"
           >
             <ul className="flex flex-col">
               {NAV_LINKS.map((link) => (
@@ -111,12 +122,13 @@ export function Navbar() {
                 </li>
               ))}
             </ul>
-            <Button href="#contact" className="mt-2 w-full" onClick={() => setOpen(false)}>
+            <Button href="/#contact" className="mt-2 w-full" onClick={() => setOpen(false)}>
               Let&apos;s Talk
             </Button>
           </motion.div>
         )}
       </AnimatePresence>
+      </div>
     </motion.header>
   );
 }

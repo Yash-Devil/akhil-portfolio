@@ -1,12 +1,14 @@
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import type { Project } from "@/types";
 
 /**
- * Designed, CSS-rendered product mockups used in place of real screenshots.
- * Renders a premium "browser" dashboard frame and, for app projects, a floating
- * phone frame — both tinted with the project's signature accent gradient. This
- * keeps the case studies looking like real product showcases until live
- * screenshots are dropped in (replace the inner abstract UI with an <Image/>).
+ * Product showcase visual for a project. When the project has a real screenshot
+ * (`project.image`), we render it inside a premium frame on a soft tinted panel
+ * — the transparent product mockups float on the light surface. Otherwise we
+ * fall back to a designed, CSS-rendered "browser + phone" mockup tinted with
+ * the project's signature accent, so every case study still looks like a real
+ * product showcase.
  */
 export function ProjectMockup({
   project,
@@ -16,6 +18,29 @@ export function ProjectMockup({
   className?: string;
 }) {
   const isApp = project.platforms.includes("App");
+
+  // Real screenshot path — transparent PNG presented on a tinted glass panel.
+  if (project.image) {
+    return (
+      <div className={cn("relative w-full", className)}>
+        <div
+          className={cn(
+            "absolute -inset-8 rounded-[3rem] bg-gradient-to-br opacity-25 blur-3xl",
+            project.accent
+          )}
+        />
+        <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-hairline bg-gradient-to-br from-mint via-surface to-peach shadow-glow-lg">
+          <Image
+            src={project.image}
+            alt={`${project.title} — product preview`}
+            fill
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            className="object-contain p-3 sm:p-5"
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={cn("relative w-full", className)}>

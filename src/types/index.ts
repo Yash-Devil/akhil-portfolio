@@ -67,6 +67,11 @@ export interface Project {
   status: ProjectStatus;
   /** Tailwind gradient classes for the project's signature accent. */
   accent: string;
+  /**
+   * Optional real product screenshot (path under /public). When set, the
+   * showcase renders the image instead of the designed CSS mockup.
+   */
+  image?: string;
 }
 
 /** Client testimonial for the slider. */

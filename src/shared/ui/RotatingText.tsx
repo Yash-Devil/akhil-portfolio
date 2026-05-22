@@ -28,7 +28,7 @@ export function RotatingText({
   }, [interval, phrases.length]);
 
   return (
-    <span className={cn("relative inline-flex overflow-hidden align-bottom", className)}>
+    <span className={cn("relative flex max-w-full justify-center overflow-hidden", className)}>
       <AnimatePresence mode="wait">
         <motion.span
           key={index}
@@ -36,7 +36,7 @@ export function RotatingText({
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: "-100%", opacity: 0 }}
           transition={{ duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
-          className="text-gradient-accent inline-block whitespace-nowrap"
+          className="text-gradient-accent inline-block max-w-full text-balance text-center"
         >
           {phrases[index]}
         </motion.span>

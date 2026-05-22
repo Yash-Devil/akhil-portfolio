@@ -27,7 +27,7 @@ const spaceGrotesk = Space_Grotesk({
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: `${siteConfig.name} — ${siteConfig.role}`,
+    default: `${siteConfig.name} — ${siteConfig.title} of ${siteConfig.company.name}`,
     template: `%s — ${siteConfig.name}`,
   },
   description: siteConfig.tagline,
@@ -38,13 +38,13 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: siteConfig.url,
-    title: `${siteConfig.name} — ${siteConfig.role}`,
+    title: `${siteConfig.name} — ${siteConfig.title} of ${siteConfig.company.name}`,
     description: siteConfig.tagline,
     siteName: siteConfig.name,
   },
   twitter: {
     card: "summary_large_image",
-    title: `${siteConfig.name} — ${siteConfig.role}`,
+    title: `${siteConfig.name} — ${siteConfig.title} of ${siteConfig.company.name}`,
     description: siteConfig.tagline,
   },
   robots: { index: true, follow: true },
@@ -72,9 +72,18 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "Person",
               name: siteConfig.name,
-              jobTitle: siteConfig.role,
+              jobTitle: `${siteConfig.title}, ${siteConfig.company.name}`,
               url: siteConfig.url,
               email: siteConfig.email,
+              worksFor: {
+                "@type": "Organization",
+                name: siteConfig.company.name,
+                url: siteConfig.url,
+              },
+              founder: {
+                "@type": "Organization",
+                name: siteConfig.company.name,
+              },
               knowsAbout: siteConfig.keywords,
             }),
           }}

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { BadgeCheck, Globe2, Clock } from "lucide-react";
 import { Section, Reveal } from "@/shared/ui";
@@ -20,13 +21,19 @@ export function Trust() {
           <div className="glass-panel relative overflow-hidden rounded-4xl p-8 text-center">
             <div className="absolute inset-0 bg-radial-glow" />
             <div className="relative">
-              <div className="mx-auto grid h-24 w-24 place-items-center rounded-3xl bg-accent-gradient font-display text-3xl font-bold text-white shadow-glow">
-                AG
+              <div className="relative mx-auto h-28 w-28 overflow-hidden rounded-full shadow-glow ring-4 ring-white">
+                <Image
+                  src="/images/profile/akhil.png"
+                  alt="Akhil Gupta"
+                  fill
+                  sizes="112px"
+                  className="object-cover"
+                />
               </div>
               <h3 className="mt-5 font-display text-fluid-lg font-semibold text-ink">
                 Akhil Gupta
               </h3>
-              <p className="text-fluid-sm text-ink-muted">App &amp; Web Developer</p>
+              <p className="text-fluid-sm text-ink-muted">Founder &amp; CEO · Abould</p>
 
               <div className="mt-6 flex flex-col gap-3 text-left">
                 {[

@@ -53,15 +53,16 @@ export function About() {
           />
           <Reveal delay={0.1} className="mt-7 space-y-5 text-fluid-base leading-relaxed text-ink-muted">
             <p>
-              Akhil Gupta is a professional App &amp; Web Developer specializing in
-              scalable mobile applications, SaaS platforms, modern web systems, and
+              Akhil Gupta is the <strong className="font-semibold text-ink">Founder &amp; CEO of Abould</strong>,
+              a software &amp; IT company, and a hands-on App &amp; Web Developer specializing
+              in scalable mobile applications, SaaS platforms, modern web systems, and
               premium UI/UX experiences.
             </p>
             <p>
-              With experience working with international clients across multiple
-              industries, he focuses on building production-ready applications with
-              scalable architectures, smooth user experiences, and high-quality
-              frontend and backend systems.
+              Through Abould, he and his team partner with international clients across
+              multiple industries to build production-ready applications with scalable
+              architectures, smooth user experiences, and high-quality frontend and
+              backend systems.
             </p>
             <p>
               He specializes in Flutter, FlutterFlow, React.js, Next.js, Node.js,

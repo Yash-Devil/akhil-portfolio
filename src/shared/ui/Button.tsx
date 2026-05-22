@@ -31,6 +31,7 @@ export interface ButtonProps {
   onClick?: () => void;
   type?: "button" | "submit";
   ariaLabel?: string;
+  disabled?: boolean;
 }
 
 /**
@@ -47,6 +48,7 @@ export function Button({
   onClick,
   type = "button",
   ariaLabel,
+  disabled,
 }: ButtonProps) {
   const classes = cn(base, variants[variant], sizes[size], className);
 
@@ -65,7 +67,13 @@ export function Button({
   }
 
   return (
-    <button type={type} onClick={onClick} aria-label={ariaLabel} className={classes}>
+    <button
+      type={type}
+      onClick={onClick}
+      aria-label={ariaLabel}
+      disabled={disabled}
+      className={classes}
+    >
       {children}
     </button>
   );

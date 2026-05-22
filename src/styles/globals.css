@@ -20,6 +20,8 @@
   html {
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    /* Guard against any element forcing horizontal scroll on mobile. */
+    overflow-x: hidden;
   }
 
   body {
@@ -30,6 +32,7 @@
       rgba(255, 178, 168, 0.16) 0%,
       transparent 70%
     );
+    width: 100%;
     overflow-x: hidden;
   }
 

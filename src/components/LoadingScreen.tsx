@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
 /**
@@ -41,9 +42,16 @@ export function LoadingScreen() {
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="grid h-16 w-16 place-items-center rounded-2xl bg-accent-gradient font-display text-2xl font-bold text-white shadow-glow"
+            className="relative h-20 w-20 overflow-hidden rounded-full shadow-glow ring-2 ring-accent/30"
           >
-            AG
+            <Image
+              src="/images/profile/akhil.png"
+              alt="Akhil Gupta"
+              fill
+              sizes="80px"
+              className="object-cover"
+              priority
+            />
           </motion.div>
 
           <div className="mt-8 h-px w-56 overflow-hidden bg-black/10">

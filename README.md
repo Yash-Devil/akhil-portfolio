@@ -11,7 +11,7 @@ A production-grade, **light-luxury** portfolio built to feel like a premium star
 ```bash
 npm install        # install dependencies
 npm run dev        # dev server  -> http://localhost:3000
-npm run build      # production build (static + 15 SSG case-study pages)
+npm run build      # production build (static + 12 SSG case-study pages)
 npm run start      # serve the production build
 ```
 
@@ -23,10 +23,11 @@ npm run start      # serve the production build
 
 | Route | Rendering | Description |
 |---|---|---|
-| `/` | Static | Single-page experience (all sections) |
+| `/` | Static | Single-page experience; the Work section teases the **4 featured** projects |
+| `/work` | Static | Full archive of all **12 projects** with a category filter |
 | `/work/[slug]` | **SSG** | A dedicated case-study page per project — generated at build time via `generateStaticParams`, each with unique SEO metadata |
 
-Every project opens in its **own page** (not a modal), with cinematic header, large product mockup, challenge/solution/outcome storytelling, features, and a "next project" link.
+The homepage shows a curated set of featured projects with a **"View all projects"** CTA → `/work`. Every project opens in its **own page** (not a modal), with cinematic header, large product mockup, challenge/solution/outcome storytelling, features, and a "next project" link.
 
 ---
 
@@ -106,7 +107,7 @@ Everything reads from `tailwind.config.ts` + `src/styles/globals.css`. Colors we
 
 ## A note on project visuals
 
-The case studies use **designed, CSS-rendered product mockups** (`ProjectMockup`) — premium dashboard + phone frames tinted with each project's accent — because real screenshots weren't provided. To use real images, drop an `<Image>` into `ProjectMockup` (and add files under `public/`); everything else stays the same.
+Projects with a real screenshot (set via `image` in `src/constants/index.ts`, files under `public/images/projects/`) render that image inside a premium tinted frame. Projects without one fall back to a **designed, CSS-rendered product mockup** (`ProjectMockup`) — dashboard + phone frames tinted with the project's accent — so every case study still looks like a real product showcase. To add a screenshot to another project, drop the file in `public/images/projects/` and set its `image` path.
 
 ---
 

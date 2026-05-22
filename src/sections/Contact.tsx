@@ -2,25 +2,53 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, MessageCircle, Send, CheckCircle2, ArrowUpRight } from "lucide-react";
+import { Mail, MessageCircle, Send, CheckCircle2, ArrowUpRight, Loader2 } from "lucide-react";
 import { Section, SectionHeading, Reveal, MagneticButton } from "@/shared/ui";
 import { siteConfig } from "@/config/site";
 import { fadeUp, staggerContainer, VIEWPORT } from "@/animations/variants";
 
 /**
  * Contact — a two-column composition: direct channels (email/WhatsApp) on one
- * side, a premium validated form on the other. The form is intentionally
- * client-side only (no backend in this build); submit shows an optimistic
- * success state. Wiring it to an API route / email service is a one-liner.
+ * side, a premium validated form on the other. The form POSTs to /api/contact,
+ * which emails the submission via Resend (see src/app/api/contact/route.ts).
  */
-export function Contact() {
-  const [sent, setSent] = useState(false);
+type Status = "idle" | "sending" | "sent" | "error";
 
-  const onSubmit = (e: React.FormEvent) => {
+export function Contact() {
+  const [status, setStatus] = useState<Status>("idle");
+  const [error, setError] = useState<string | null>(null);
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSent(true);
-    setTimeout(() => setSent(false), 4000);
+    const form = e.currentTarget;
+    const data = Object.fromEntries(new FormData(form));
+
+    setStatus("sending");
+    setError(null);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) {
+        const { error: message } = await res.json().catch(() => ({}));
+        throw new Error(message ?? "Failed to send message.");
+      }
+
+      form.reset();
+      setStatus("sent");
+      setTimeout(() => setStatus("idle"), 4000);
+    } catch (err) {
+      setStatus("error");
+      setError(err instanceof Error ? err.message : "Something went wrong.");
+    }
   };
+
+  const sending = status === "sending";
+  const sent = status === "sent";
 
   return (
     <Section id="contact">
@@ -88,8 +116,17 @@ export function Contact() {
               <label htmlFor="message">Project details</label>
             </div>
 
-            <MagneticButton type="submit" size="lg" className="w-full sm:w-auto">
-              {sent ? (
+            <MagneticButton
+              type="submit"
+              size="lg"
+              className="w-full sm:w-auto"
+              disabled={sending}
+            >
+              {sending ? (
+                <>
+                  Sending <Loader2 size={16} className="animate-spin" />
+                </>
+              ) : sent ? (
                 <>
                   Message sent <CheckCircle2 size={18} />
                 </>
@@ -99,6 +136,12 @@ export function Contact() {
                 </>
               )}
             </MagneticButton>
+
+            {status === "error" && error && (
+              <p role="alert" className="text-fluid-sm text-red-400">
+                {error}
+              </p>
+            )}
           </form>
         </Reveal>
       </div>

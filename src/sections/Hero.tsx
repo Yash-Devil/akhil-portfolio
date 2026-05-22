@@ -88,7 +88,7 @@ export function Hero() {
             className="mb-8 inline-flex items-center gap-2 rounded-full border border-hairline bg-glass px-4 py-1.5 text-fluid-sm text-ink-muted backdrop-blur-xl"
           >
             <Sparkles size={14} className="text-accent-soft" />
-            {siteConfig.role} · Available for select projects
+            {siteConfig.title} of {siteConfig.company.name} · Available for select projects
           </motion.span>
 
           {/* Giant name */}
@@ -99,7 +99,7 @@ export function Hero() {
           {/* Rotating value proposition */}
           <motion.div
             variants={fadeUp}
-            className="mt-6 flex h-[1.6em] items-center justify-center font-display text-fluid-xl font-medium text-ink"
+            className="mt-6 flex min-h-[2.4em] w-full max-w-full items-center justify-center px-2 text-center font-display text-fluid-lg font-medium leading-tight text-ink sm:min-h-[1.8em] sm:text-fluid-xl"
           >
             <RotatingText phrases={HERO_ROTATING} />
           </motion.div>
@@ -108,8 +108,9 @@ export function Hero() {
             variants={fadeUp}
             className="mt-6 max-w-2xl text-fluid-base leading-relaxed text-ink-muted"
           >
-            Professional developer specializing in scalable apps, modern web systems,
-            SaaS architectures, and premium UI/UX experiences.
+            Founder &amp; CEO of {siteConfig.company.name} — building scalable apps, modern
+            web systems, SaaS architectures, and premium UI/UX experiences for clients
+            worldwide.
           </motion.p>
 
           {/* Skills */}
@@ -126,11 +127,11 @@ export function Hero() {
           </motion.ul>
 
           <motion.div variants={fadeUp} className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <MagneticButton href="#work" size="lg">
+            <MagneticButton href="/#work" size="lg">
               View Projects
               <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
             </MagneticButton>
-            <MagneticButton href="#contact" variant="secondary" size="lg">
+            <MagneticButton href="/#contact" variant="secondary" size="lg">
               Contact Me
             </MagneticButton>
           </motion.div>
@@ -139,7 +140,7 @@ export function Hero() {
 
       {/* Scroll indicator */}
       <motion.a
-        href="#about"
+        href="/#about"
         aria-label="Scroll to about"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
