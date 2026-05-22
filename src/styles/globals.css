@@ -1,0 +1,136 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Design tokens — single source of truth for the palette.
+   Mirrors tailwind.config.ts (light + emerald, abould-inspired).
+   ============================================================ */
+:root {
+  --font-inter: "Inter", system-ui, sans-serif;
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --angle: 0deg;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-base text-ink font-sans antialiased;
+    /* Faint peach wash at the top of the page, like the reference hero. */
+    background-image: radial-gradient(
+      60% 45% at 50% 0%,
+      rgba(255, 178, 168, 0.16) 0%,
+      transparent 70%
+    );
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    @apply bg-accent/20 text-accent-violet;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #ebf5f3;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #10b488, #089473);
+    border-radius: 999px;
+    border: 2px solid #ebf5f3;
+  }
+
+  /* Hide native cursor on pointer devices — replaced by the custom cursor. */
+  @media (hover: hover) and (pointer: fine) {
+    body.has-custom-cursor,
+    body.has-custom-cursor * {
+      cursor: none;
+    }
+  }
+}
+
+@layer components {
+  /* Heading gradient — dark slate fading into emerald. */
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(120deg, #16241f 0%, #0b6e57 58%, #089473 100%);
+  }
+
+  /* Pure emerald gradient for accent words. */
+  .text-gradient-accent {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(120deg, #10b488 0%, #089473 50%, #0b6e57 100%);
+  }
+
+  /* Glassmorphism panel — frosted white with a soft elevation shadow. */
+  .glass-panel {
+    @apply border border-hairline backdrop-blur-xl;
+    background-color: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 18px 50px -28px rgba(15, 42, 36, 0.22);
+  }
+
+  /* Animated conic-gradient border (service cards on hover). */
+  .animated-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: conic-gradient(
+      from var(--angle),
+      transparent 0%,
+      rgba(8, 148, 115, 0.8) 20%,
+      rgba(16, 180, 136, 0.8) 35%,
+      transparent 55%
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .animated-border:hover::before {
+    opacity: 1;
+    animation: border-spin 4s linear infinite;
+  }
+}
+
+@layer utilities {
+  .container-px {
+    @apply px-5 sm:px-8 lg:px-12;
+  }
+
+  /* Floating-label form fields. */
+  .float-field {
+    @apply relative;
+  }
+  .float-field label {
+    @apply pointer-events-none absolute left-4 top-3.5 origin-left text-fluid-base text-ink-faint transition-all duration-200;
+  }
+  .float-field input:focus ~ label,
+  .float-field input:not(:placeholder-shown) ~ label,
+  .float-field textarea:focus ~ label,
+  .float-field textarea:not(:placeholder-shown) ~ label {
+    @apply -translate-y-3 translate-x-[-2px] scale-[0.78] text-accent-soft;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

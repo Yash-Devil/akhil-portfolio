@@ -1,8 +1,8 @@
 # Akhil Gupta — Premium Portfolio
 
-A production-grade, dark-themed portfolio website built to feel like a funded-startup product, not a template. Designed and engineered with the polish of Linear / Vercel / Stripe-class interfaces.
+A production-grade, **light-luxury** portfolio built to feel like a premium startup-agency product — clean, spacious, and Awwwards-leaning. The palette (near-white surfaces, faint peach hero wash, emerald-green accents) and the storytelling case-study approach are sampled from / inspired by abould.com while remaining fully original.
 
-**Stack:** Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS · Framer Motion · Lenis
+**Stack:** Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS · Framer Motion · GSAP · Lenis · Lucide React
 
 ---
 
@@ -10,133 +10,129 @@ A production-grade, dark-themed portfolio website built to feel like a funded-st
 
 ```bash
 npm install        # install dependencies
-npm run dev        # start dev server  -> http://localhost:3000
-npm run build      # production build (static export of "/")
+npm run dev        # dev server  -> http://localhost:3000
+npm run build      # production build (static + 15 SSG case-study pages)
 npm run start      # serve the production build
 ```
 
-> Requires Node 18.18+ (developed on Node 22). The site builds to a fully static page — deploy anywhere (Vercel, Netlify, static host).
+> Node 18.18+ (developed on Node 22). The whole site prerenders to static HTML — deploy to Vercel, Netlify, or any static host.
 
 ---
 
-## Architecture overview
+## Routing & pages
 
-The codebase is organised by **responsibility**, not by file type, so any feature can be reasoned about in isolation. Data, presentation, motion, and configuration are each separated.
+| Route | Rendering | Description |
+|---|---|---|
+| `/` | Static | Single-page experience (all sections) |
+| `/work/[slug]` | **SSG** | A dedicated case-study page per project — generated at build time via `generateStaticParams`, each with unique SEO metadata |
 
-```
-akhil-portfolio/
-├─ app/                # Next.js App Router: layout, page, global styles, metadata
-│  ├─ layout.tsx       # fonts, SEO metadata, JSON-LD, providers (scroll/bg/nav/footer)
-│  ├─ page.tsx         # single-page section composition
-│  └─ globals.css      # design tokens + base layer + reduced-motion handling
-│
-├─ sections/           # full page sections (Hero, About, Services, … Contact)
-├─ layouts/            # persistent chrome: Navbar, Footer
-├─ components/         # feature components
-│  ├─ SmoothScroll.tsx # Lenis provider
-│  ├─ AuroraBackground.tsx
-│  └─ portfolio/       # ProjectCard + ProjectModal (shared-element morph)
-│
-├─ shared/ui/          # reusable design-system primitives (Button, Section, …)
-├─ hooks/              # useMagnetic, useMousePosition, useCounter
-├─ animations/         # Framer Motion variants — the central motion language
-├─ constants/          # ALL content/data (projects, services, tech, testimonials)
-├─ config/             # site metadata (name, role, contact, SEO keywords)
-├─ types/              # shared TypeScript models
-└─ lib/                # utilities (cn class-merger)
-```
-
-**Why this structure?** Sections compose primitives from `shared/ui`; primitives never import sections. Content lives in `constants/` and `config/` so copy/projects can change without touching JSX. This keeps the dependency graph one-directional and the project scalable to a multi-page site.
+Every project opens in its **own page** (not a modal), with cinematic header, large product mockup, challenge/solution/outcome storytelling, features, and a "next project" link.
 
 ---
 
-## Design system
+## Architecture (`src/`)
 
-Everything reads from a single set of tokens defined in `tailwind.config.ts` + `app/globals.css`.
+Organised by **responsibility**, not file type — sections compose primitives; primitives never import sections; all content lives in data files.
+
+```
+src/
+├─ app/                  # App Router
+│  ├─ layout.tsx         # fonts, SEO, JSON-LD, providers (loader/cursor/scroll/bg)
+│  ├─ page.tsx           # homepage section composition
+│  └─ work/[slug]/       # dynamic per-project case-study pages (SSG)
+├─ sections/             # page sections (Hero, About … Trust, Contact)
+├─ layouts/              # Navbar, Footer
+├─ components/           # feature components
+│  ├─ CustomCursor / LoadingScreen / ScrollProgress / AuroraBackground / SmoothScroll
+│  └─ portfolio/         # ProjectRow, ProjectMockup, CaseStudyContent
+├─ shared/ui/            # design-system primitives (Button, TiltCard, RotatingText…)
+├─ hooks/                # useMagnetic, useMousePosition, useCounter
+├─ animations/           # Framer Motion variants — the central motion language
+├─ constants/            # ALL content/data (projects, services, tech, testimonials)
+├─ config/               # site metadata + SEO keywords
+├─ types/                # shared TypeScript models
+├─ lib/ · utils/         # helpers (cn class-merger)
+└─ styles/               # globals.css (tokens, glass, animated border, float labels)
+```
+
+The `@/*` path alias maps to `./src/*` (see `tsconfig.json`).
+
+---
+
+## Design system (Abould-inspired light + emerald tokens)
+
+Everything reads from `tailwind.config.ts` + `src/styles/globals.css`. Colors were sampled directly from the reference screenshots.
 
 | Token | Value | Use |
 |---|---|---|
-| `base` | `#08080A` | page background (matte black) |
-| `surface` / `elevated` | `#0E0E12` / `#15151B` | card + panel surfaces |
-| `accent.violet → indigo → cyan` | `#8B5CF6 / #6366F1 / #22D3EE` | gradient accent system |
-| `ink / ink-muted / ink-faint` | white scale | text hierarchy |
+| `base` | `#FDFDFD` | primary (near-white) background |
+| `surface` / `elevated` | `#FFFFFF` | white cards |
+| `peach` / `mint` | `#FFF8F7` / `#EBF5F3` | hero wash / tinted chips & sections |
+| `glass` | `rgba(255,255,255,0.70)` | frosted glassmorphism cards |
+| `hairline` / `border` | `rgba(15,42,36,0.10)` | hairline borders |
+| `accent.DEFAULT` | `#089473` | brand emerald (fills, gradients) |
+| `accent.violet / soft / blue` | `#0B6E57 / #0F8165 / #10B488` | emerald scale: deep text / mid text / light* |
+| `ink / ink-muted / ink-faint` | `#16241F / #586863 / #8A9892` | dark-slate text hierarchy |
+| gradient | `135deg #10B488 → #089473 → #0B6E57` | emerald brand gradient |
 
-- **Typography:** `Space Grotesk` for display headings (distinct, technical character) + `Inter` for body (peerless legibility). Loaded via `next/font` → self-hosted, zero layout shift, no external requests. A fluid `clamp()` type scale (`fluid-sm … fluid-3xl`) means text scales smoothly between mobile and ultra-wide **without breakpoint jumps**.
-- **Spacing & rhythm:** an 8px-based scale; the `Section` primitive standardises vertical rhythm and the `Container` primitive standardises max-width + gutters, so alignment never drifts.
-- **Glassmorphism + glow:** `.glass`, `shadow-glow`, and the `accent-gradient` utility provide the premium surface language used consistently across cards, the navbar, and CTAs.
+> *The `accent.violet/blue` key **names** are retained for stability across the codebase, but their **values** are now emerald — so all existing `text-accent-violet` etc. classes render green. Rename the keys if you prefer semantic accuracy.*
 
-### Why these decisions
-- **Dark, restrained palette** — a single gradient accent over near-black reads as "premium/technical." Colour is used sparingly so it signals, rather than decorates.
-- **One gradient, three stops** — keeps the brand cohesive; every accent (text, glows, buttons, status pills) derives from the same violet→indigo→cyan ramp.
-- **Typographic hierarchy** — eyebrow → display title → muted subtitle is enforced by the `SectionHeading` component, so every section announces itself the same way.
+- **Type:** `Space Grotesk` (display) + `Inter` (body) via `next/font` (self-hosted, zero CLS). A fluid `clamp()` scale (`fluid-sm … fluid-mega`) scales text continuously from mobile to ultra-wide — no breakpoint jumps. The hero uses `fluid-mega` for giant cinematic typography.
+- **Surfaces:** `.glass-panel` (glassmorphism), `shadow-glow*`, `bg-radial-glow`, and `.animated-border` (conic-gradient hover border) form the premium surface language.
 
 ---
 
-## Reusable component systems
+## Advanced feature systems
 
-| Primitive | Responsibility |
+| Feature | File |
 |---|---|
-| `Button` / `MagneticButton` | polymorphic (link or button); magnetic variant adds cursor attraction |
-| `Section` + `Container` | vertical rhythm, anchor offsets, max-width + gutters |
-| `SectionHeading` | consistent eyebrow/title/subtitle with staggered reveal |
-| `SpotlightCard` | glass card with cursor-tracking radial glow |
-| `Reveal` | drop-in scroll-reveal wrapper (accepts custom variants/delay) |
-| `Counter` | scroll-triggered animated number |
-| `AnimatedHeadline` | masked, per-word headline entrance |
-| `Badge` | tech tags / status chips |
-| `ProjectCard` + `ProjectModal` | the portfolio shared-element interaction |
+| Custom animated cursor (dot + lagging ring, grows on hover) | `CustomCursor` |
+| Premium loading screen (count to 100 + curtain wipe) | `LoadingScreen` |
+| Scroll progress bar (spring-smoothed) | `ScrollProgress` |
+| Animated grid + floating glow blobs background | `AuroraBackground` |
+| Dynamic navbar blur on scroll + mobile sheet | `Navbar` |
+| Lenis smooth scroll | `SmoothScroll` |
+| Hero mouse-parallax blobs + floating particles + rotating text | `Hero`, `RotatingText` |
+| 3D tilt + spotlight + animated border cards | `TiltCard` (Services) |
+| Magnetic buttons | `useMagnetic` (CTAs) |
+| Alternating case-study rows + CSS product mockups | `ProjectRow`, `ProjectMockup` |
+| Industries marquee (trust) | `Trust` |
+
+**Motion philosophy:** restraint. Short, eased opacity+translate moves driven by a single shared variant language (`animations/variants.ts`). Pointer-driven effects (cursor, tilt, spotlight) use Framer **motion values**, so mousemove never re-renders React.
+
+> **Accessibility:** `prefers-reduced-motion` collapses all animation globally, Lenis is disabled, and the custom cursor is skipped on touch / coarse-pointer devices.
 
 ---
 
-## Animation system
+## A note on project visuals
 
-All motion is defined once in `animations/variants.ts` (a shared "motion language") and consumed everywhere, so timing/easing can be tuned globally. The philosophy is **restraint** — short, eased opacity+translate moves rather than flashy motion.
-
-**Custom feature systems built:**
-
-1. **Magnetic buttons** (`useMagnetic`) — CTAs drift toward the cursor and spring back. Spring physics give weight; used on hero + contact CTAs.
-2. **Spotlight cards** (`useMousePosition` + `SpotlightCard`) — a radial glow follows the pointer. Driven by Framer **motion values**, so mousemove updates *don't* trigger React re-renders — cheap even across a 15-card grid.
-3. **Brand-glow tech badges** — each badge lights up in its technology's real brand colour via an inline CSS variable.
-4. **Scroll-reveal + stagger** (`Reveal`, `staggerContainer`) — sections cascade in via `whileInView` (IntersectionObserver under the hood), `once: true` so they don't replay.
-5. **Animated counters** (`useCounter`) — stats count up the first time they enter view.
-6. **Shared-element portfolio morph** — clicking a `ProjectCard` makes it physically grow into a full case-study `ProjectModal` using matching Framer `layoutId`s. Filtering reflows the grid with layout transitions instead of hard cuts.
-7. **Lenis smooth scroll** + a GPU-only **aurora background** (pure CSS transforms, no per-frame JS).
-
-> **Accessibility:** `prefers-reduced-motion` is respected globally in `globals.css` (all animation/transition durations collapse) and Lenis is disabled for those users.
+The case studies use **designed, CSS-rendered product mockups** (`ProjectMockup`) — premium dashboard + phone frames tinted with each project's accent — because real screenshots weren't provided. To use real images, drop an `<Image>` into `ProjectMockup` (and add files under `public/`); everything else stays the same.
 
 ---
 
 ## Responsive strategy
 
-- **Fluid typography** via `clamp()` removes most "text too big/small at breakpoint X" problems — type scales continuously from 320px to ultra-wide.
-- **Mobile-first** Tailwind breakpoints; layouts move from single column → 2-up → 3-up grids (`sm`, `lg`).
-- **Complex responsive compositions:** the Hero collapses its split (headline + orbit visual) to a single focused column on mobile (the decorative visual is hidden, not shrunk, to keep the hero impactful); About reflows its narrative + highlight-card columns; the Portfolio grid is a responsive masonry-style layout.
-- **Mobile navigation:** the navbar collapses into an animated glass sheet with body-scroll locking.
-
----
+- **Fluid typography** (`clamp()`) removes most breakpoint-specific sizing issues.
+- Mobile-first grids reflow 1 → 2 → 3/4 columns; case-study rows alternate sides on desktop and stack on mobile.
+- Navbar collapses to an animated glass sheet (with body-scroll lock); custom cursor and heavy parallax are pointer-gated.
 
 ## Performance & SEO
 
-- **Static prerender** — `/` builds to static HTML; all section copy + project data is in the server-rendered markup (verified: full content present in initial HTML), so it's fast and crawlable.
-- **Self-hosted fonts** via `next/font` (no render-blocking external font requests, no CLS).
-- **`optimizePackageImports`** for `framer-motion`, `lucide-react`, `react-icons` — tree-shakes icon/motion imports to shrink the bundle.
-- **Motion-value-driven hover** avoids re-render storms on pointer move.
-- **Semantic HTML** (`header`, `main`, `section`, `footer`, headings in order) + ARIA labels on icon-only controls and the project modal (`role="dialog"`, `aria-modal`).
-- **SEO metadata:** title template, description, Open Graph, Twitter card, robots, and **JSON-LD `Person` structured data** in `app/layout.tsx`. Update real values in `config/site.ts`.
-
----
+- **Static / SSG** everything (verified: full content in server HTML).
+- Self-hosted fonts (no render-blocking, no CLS); `optimizePackageImports` tree-shakes `framer-motion` / `lucide-react` / `react-icons`.
+- Semantic HTML + ARIA on icon-only controls; **JSON-LD `Person`** + per-project Open Graph metadata.
 
 ## Customisation
 
-| Want to change… | Edit |
+| Change… | Edit |
 |---|---|
-| Name, role, email, socials, SEO keywords | `config/site.ts` |
-| Projects, services, tech, stats, testimonials | `constants/index.ts` |
-| Colours, fonts, spacing, animations tokens | `tailwind.config.ts` + `app/globals.css` |
-| Motion timing/easing | `animations/variants.ts` |
+| Name, role, email, socials, SEO | `src/config/site.ts` |
+| Projects (incl. case-study copy), services, tech, testimonials, trust | `src/constants/index.ts` |
+| Colours, fonts, spacing, animation tokens | `tailwind.config.ts` + `src/styles/globals.css` |
+| Motion timing/easing | `src/animations/variants.ts` |
 
-The contact form is currently client-side (optimistic success state). To make it live, point `onSubmit` in `sections/Contact.tsx` at an API route or an email service (Resend, Formspree, etc.).
+The contact form is client-side (optimistic success). Point `onSubmit` in `src/sections/Contact.tsx` at an API route or email service (Resend/Formspree) to make it live.
 
 ---
 
-Built with Next.js, TypeScript, Tailwind CSS, and Framer Motion.
+Built with Next.js, TypeScript, Tailwind CSS, Framer Motion, GSAP & Lenis.
