@@ -72,6 +72,20 @@ export interface Project {
    * showcase renders the image instead of the designed CSS mockup.
    */
   image?: string;
+  /**
+   * Public links for the project (live site, app stores, etc.). Surfaced as
+   * chip CTAs on the case-study page. Omit for unreleased work.
+   */
+  links?: ProjectLink[];
+}
+
+export type ProjectLinkKind = "web" | "app-store" | "play-store";
+
+export interface ProjectLink {
+  kind: ProjectLinkKind;
+  /** Short label like "Visit site" or "App Store". */
+  label: string;
+  url: string;
 }
 
 /** Client testimonial for the slider. */

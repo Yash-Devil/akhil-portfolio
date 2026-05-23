@@ -2,17 +2,34 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, CheckCircle2, Boxes, Cpu, Layers } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  ArrowUpRight,
+  CheckCircle2,
+  Boxes,
+  Cpu,
+  Layers,
+  Globe,
+  Apple,
+  Play,
+} from "lucide-react";
 import { Container, Badge, Button } from "@/shared/ui";
 import { ProjectMockup } from "./ProjectMockup";
 import { fadeUp, staggerContainer, VIEWPORT } from "@/animations/variants";
 import { cn } from "@/lib/utils";
-import type { Project } from "@/types";
+import type { Project, ProjectLink } from "@/types";
 
 const statusStyle: Record<Project["status"], string> = {
   Live: "border-emerald-600/25 bg-emerald-500/10 text-emerald-700",
   "In Development": "border-amber-600/25 bg-amber-500/10 text-amber-700",
   Completed: "border-sky-600/25 bg-sky-500/10 text-sky-700",
+};
+
+const linkIcon: Record<ProjectLink["kind"], typeof Globe> = {
+  web: Globe,
+  "app-store": Apple,
+  "play-store": Play,
 };
 
 const story = (project: Project) => [
@@ -53,55 +70,81 @@ export function CaseStudyContent({
           <ArrowLeft size={16} /> Back to work
         </Link>
 
-        {/* Header */}
-        <motion.header
-          variants={staggerContainer(0.1)}
-          initial="hidden"
-          animate="visible"
-          className="mt-8"
-        >
-          <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-3">
-            <span className="text-fluid-sm text-accent-soft">{project.category}</span>
-            <span className="h-px w-8 bg-hairline" />
-            <span className="text-fluid-sm text-ink-faint">{project.year}</span>
-            <span
-              className={cn(
-                "rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide",
-                statusStyle[project.status]
-              )}
-            >
-              {project.status}
-            </span>
-          </motion.div>
-
-          <motion.h1
-            variants={fadeUp}
-            className="mt-4 font-display text-fluid-3xl font-semibold leading-[0.95] tracking-tightest text-gradient"
+        {/* Header — two-column on desktop: copy on the left, mockup on the right.
+            This keeps the page rhythmic and stops the giant hero from dominating. */}
+        <div className="mt-10 grid items-center gap-10 lg:grid-cols-[1fr_1.05fr] lg:gap-14">
+          <motion.header
+            variants={staggerContainer(0.08)}
+            initial="hidden"
+            animate="visible"
           >
-            {project.title}
-          </motion.h1>
-          <motion.p variants={fadeUp} className="mt-4 max-w-2xl text-fluid-xl text-ink-muted">
-            {project.tagline}
-          </motion.p>
+            <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-3">
+              <span className="text-fluid-sm font-medium text-accent-soft">{project.category}</span>
+              <span className="h-px w-6 bg-hairline" />
+              <span className="text-fluid-sm text-ink-faint">{project.year}</span>
+              <span
+                className={cn(
+                  "rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide",
+                  statusStyle[project.status]
+                )}
+              >
+                {project.status}
+              </span>
+            </motion.div>
 
-          <motion.div variants={fadeUp} className="mt-6 flex flex-wrap gap-2">
-            {project.platforms.map((p) => (
-              <Badge key={p} className="border-accent-violet/25 bg-accent-violet/10 text-accent-soft">
-                {p}
-              </Badge>
-            ))}
+            <motion.h1
+              variants={fadeUp}
+              className="mt-4 font-display text-fluid-2xl font-semibold leading-[1.05] tracking-tightest text-gradient sm:text-fluid-3xl"
+            >
+              {project.title}
+            </motion.h1>
+            <motion.p variants={fadeUp} className="mt-3 max-w-xl text-fluid-lg leading-snug text-ink-muted">
+              {project.tagline}
+            </motion.p>
+
+            <motion.div variants={fadeUp} className="mt-5 flex flex-wrap gap-2">
+              {project.platforms.map((p) => (
+                <Badge key={p} className="border-accent-violet/25 bg-accent-violet/10 text-accent-soft">
+                  {p}
+                </Badge>
+              ))}
+            </motion.div>
+
+            {/* Live links — surfaced prominently so visitors can jump straight to the product. */}
+            {project.links && project.links.length > 0 && (
+              <motion.div variants={fadeUp} className="mt-7 flex flex-wrap gap-3">
+                {project.links.map((link) => {
+                  const Icon = linkIcon[link.kind];
+                  return (
+                    <a
+                      key={link.url}
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group inline-flex items-center gap-2 rounded-full border border-hairline bg-surface px-4 py-2 text-fluid-sm font-medium text-ink shadow-glow-sm transition-all hover:-translate-y-0.5 hover:border-accent/40 hover:text-accent"
+                    >
+                      <Icon size={15} className="text-accent-soft" />
+                      {link.label}
+                      <ArrowUpRight
+                        size={14}
+                        className="text-ink-faint transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent"
+                      />
+                    </a>
+                  );
+                })}
+              </motion.div>
+            )}
+          </motion.header>
+
+          {/* Hero mockup — sits beside the header copy, balanced not dominant. */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.25, ease: [0.21, 0.47, 0.32, 0.98] }}
+          >
+            <ProjectMockup project={project} />
           </motion.div>
-        </motion.header>
-
-        {/* Hero mockup */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: [0.21, 0.47, 0.32, 0.98] }}
-          className="mt-12 sm:mt-16"
-        >
-          <ProjectMockup project={project} />
-        </motion.div>
+        </div>
 
         {/* Overview + meta */}
         <div className="mt-16 grid gap-10 lg:grid-cols-[1.4fr_0.6fr] lg:gap-16">

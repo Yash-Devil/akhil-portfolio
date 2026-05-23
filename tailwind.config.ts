@@ -39,13 +39,15 @@ const config: Config = {
       },
       fontSize: {
         // Fluid type scale — clamps continuously from mobile to ultra-wide.
-        "fluid-sm": "clamp(0.875rem, 0.8rem + 0.3vw, 1rem)",
-        "fluid-base": "clamp(1rem, 0.95rem + 0.3vw, 1.125rem)",
-        "fluid-lg": "clamp(1.125rem, 1rem + 0.6vw, 1.375rem)",
-        "fluid-xl": "clamp(1.5rem, 1.2rem + 1.4vw, 2.25rem)",
-        "fluid-2xl": "clamp(2rem, 1.4rem + 3vw, 3.5rem)",
-        "fluid-3xl": "clamp(2.75rem, 1.6rem + 5.6vw, 7rem)",
-        "fluid-mega": "clamp(3.5rem, 1rem + 11vw, 11rem)",
+        // Maxes tuned down so headings stop overflowing on wide screens; mobile
+        // floors kept low so small viewports never feel cramped.
+        "fluid-sm": "clamp(0.875rem, 0.82rem + 0.2vw, 0.95rem)",
+        "fluid-base": "clamp(0.95rem, 0.9rem + 0.25vw, 1.05rem)",
+        "fluid-lg": "clamp(1.05rem, 0.98rem + 0.4vw, 1.2rem)",
+        "fluid-xl": "clamp(1.25rem, 1.1rem + 0.8vw, 1.6rem)",
+        "fluid-2xl": "clamp(1.6rem, 1.3rem + 1.4vw, 2.1rem)",
+        "fluid-3xl": "clamp(2rem, 1.5rem + 2.4vw, 3.25rem)",
+        "fluid-mega": "clamp(2.5rem, 1.6rem + 4.5vw, 5.5rem)",
       },
       letterSpacing: {
         tightest: "-0.04em",

@@ -215,6 +215,10 @@ export const PROJECTS: Project[] = [
     status: "Live",
     accent: "from-[#34D399] to-[#089473]",
     image: "/images/projects/condition-pro.png",
+    links: [
+      { kind: "app-store", label: "App Store", url: "https://apps.apple.com/us/app/condition-pro/id6756789424" },
+      { kind: "play-store", label: "Play Store", url: "https://play.google.com/store/apps/details?id=com.mycompany.conditionpro" },
+    ],
   },
   {
     id: "daydone",
@@ -245,6 +249,7 @@ export const PROJECTS: Project[] = [
     status: "Live",
     accent: "from-[#10B488] to-[#0B6E57]",
     image: "/images/projects/daydone.png",
+    links: [{ kind: "web", label: "Visit site", url: "https://web.daydone.co.uk" }],
   },
   {
     id: "stage-connect",
@@ -275,6 +280,7 @@ export const PROJECTS: Project[] = [
     status: "Live",
     accent: "from-[#14B8A6] to-[#0F8165]",
     image: "/images/projects/stage-connect.png",
+    links: [{ kind: "web", label: "Visit site", url: "https://thestageconnect.com/dashboard/explore" }],
   },
   {
     id: "linked-llc",
@@ -305,6 +311,9 @@ export const PROJECTS: Project[] = [
     status: "Live",
     accent: "from-[#2DD4BF] to-[#0B6E57]",
     image: "/images/projects/linked-llc.png",
+    links: [
+      { kind: "play-store", label: "Play Store", url: "https://play.google.com/store/apps/details?id=com.mycompany.linked_project" },
+    ],
   },
   {
     id: "holiday-management-system",
@@ -334,6 +343,8 @@ export const PROJECTS: Project[] = [
     technologies: ["Next.js", "Node.js", "PostgreSQL"],
     status: "Live",
     accent: "from-[#10B488] to-[#047857]",
+    image: "/images/projects/holiday-management-system.png",
+    links: [{ kind: "web", label: "Visit site", url: "https://hol.darhpc.co.uk" }],
   },
   {
     id: "writeoffgenie",
@@ -363,6 +374,11 @@ export const PROJECTS: Project[] = [
     technologies: ["Next.js", "Node.js", "PostgreSQL"],
     status: "Live",
     accent: "from-[#34D399] to-[#0F8165]",
+    image: "/images/projects/writeoffgenie.png",
+    links: [
+      { kind: "web", label: "Visit site", url: "https://www.writeoffgenie.ai/" },
+      { kind: "play-store", label: "Play Store", url: "https://play.google.com/store/apps/details?id=com.writeoffgenie.app" },
+    ],
   },
   {
     id: "check4you",
@@ -392,6 +408,10 @@ export const PROJECTS: Project[] = [
     technologies: ["Flutter", "Firebase", "Node.js"],
     status: "Live",
     accent: "from-[#10B488] to-[#0B6E57]",
+    image: "/images/projects/check4you.png",
+    links: [
+      { kind: "play-store", label: "Play Store", url: "https://play.google.com/store/apps/details?id=com.check4you.proapp" },
+    ],
   },
   {
     id: "eunoia",
@@ -421,6 +441,7 @@ export const PROJECTS: Project[] = [
     technologies: ["Flutter", "Supabase", "Node.js"],
     status: "Live",
     accent: "from-[#2DD4BF] to-[#089473]",
+    image: "/images/projects/eunoia.png",
   },
   {
     id: "mincon",
@@ -448,8 +469,9 @@ export const PROJECTS: Project[] = [
     ],
     deliverables: ["Web App", "Admin Dashboard", "Reporting"],
     technologies: ["React.js", "Node.js", "PostgreSQL"],
-    status: "Completed",
+    status: "In Development",
     accent: "from-[#14B8A6] to-[#0F8165]",
+    image: "/images/projects/mincon.png",
   },
   {
     id: "arogyai",
@@ -477,8 +499,9 @@ export const PROJECTS: Project[] = [
     ],
     deliverables: ["Mobile App", "Vitals API", "Alerts"],
     technologies: ["Flutter", "Firebase", "Node.js"],
-    status: "Live",
+    status: "In Development",
     accent: "from-[#34D399] to-[#047857]",
+    image: "/images/projects/arogyai.png",
   },
   {
     id: "hollenbeck",
@@ -506,8 +529,9 @@ export const PROJECTS: Project[] = [
     ],
     deliverables: ["SaaS Web App", "Admin Panel", "Invoicing"],
     technologies: ["Next.js", "Node.js", "PostgreSQL"],
-    status: "Live",
+    status: "In Development",
     accent: "from-[#10B488] to-[#0B6E57]",
+    image: "/images/projects/hollenbeck.png",
   },
   {
     id: "aeroskai",
@@ -537,6 +561,41 @@ export const PROJECTS: Project[] = [
     technologies: ["Flutter", "Node.js", "MongoDB"],
     status: "In Development",
     accent: "from-[#2DD4BF] to-[#0F8165]",
+    image: "/images/projects/aeroskai.png",
+  },
+  {
+    id: "yesgurl",
+    slug: "yesgurl",
+    title: "Yes Gurl",
+    tagline: "Friendship & community for women.",
+    category: "Mobile App",
+    type: "Social & Community App",
+    year: "2025",
+    platforms: ["App"],
+    overview:
+      "A friendship-first social app built for women to meet, connect, and build community. Yes Gurl pairs intentional matching with private group spaces, making it easy to form real-life friendships in a safe, welcoming environment.",
+    challenge:
+      "Mainstream social apps weren't built for women looking for genuine platonic friendships, leaving a gap for a safer, more focused community space.",
+    solution:
+      "We designed and shipped a Flutter app with verified profiles, interest-based matching, private group chats, and trust-first onboarding so every interaction feels safe.",
+    outcome:
+      "A growing community where women find real friendships — launched on both the App Store and Play Store.",
+    features: [
+      "Interest-based friend matching",
+      "Verified women-only profiles",
+      "Private group chats",
+      "Trust-first onboarding",
+      "Community events",
+    ],
+    deliverables: ["iOS & Android App", "Matching Engine", "Community Tools"],
+    technologies: ["Flutter", "Firebase", "Node.js"],
+    status: "Live",
+    accent: "from-[#34D399] to-[#0B6E57]",
+    image: "/images/projects/yesgurl.png",
+    links: [
+      { kind: "app-store", label: "App Store", url: "https://apps.apple.com/gb/app/yes-gurl-friendship-for-women/id6753656100" },
+      { kind: "play-store", label: "Play Store", url: "https://play.google.com/store/apps/details?id=com.mycompany.yesgurl" },
+    ],
   },
 ];
 

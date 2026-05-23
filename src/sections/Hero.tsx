@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { ArrowRight, Sparkles, ArrowDown } from "lucide-react";
 import { Container, MagneticButton, AnimatedHeadline, RotatingText } from "@/shared/ui";
@@ -81,59 +82,121 @@ export function Hero() {
           variants={staggerContainer(0.1, 0.1)}
           initial="hidden"
           animate="visible"
-          className="mx-auto flex max-w-5xl flex-col items-center text-center"
+          className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14"
         >
-          <motion.span
-            variants={fadeUp}
-            className="mb-8 inline-flex items-center gap-2 rounded-full border border-hairline bg-glass px-4 py-1.5 text-fluid-sm text-ink-muted backdrop-blur-xl"
-          >
-            <Sparkles size={14} className="text-accent-soft" />
-            {siteConfig.title} of {siteConfig.company.name} · Available for select projects
-          </motion.span>
+          {/* LEFT — text column. Centered on mobile, left-aligned on desktop. */}
+          <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
+            <motion.span
+              variants={fadeUp}
+              className="mb-6 inline-flex items-center gap-2 rounded-full border border-hairline bg-glass px-4 py-1.5 text-fluid-sm text-ink-muted backdrop-blur-xl"
+            >
+              <Sparkles size={14} className="text-accent-soft" />
+              {siteConfig.title} of {siteConfig.company.name}
+            </motion.span>
 
-          {/* Giant name */}
-          <h1 className="font-display text-fluid-mega font-semibold leading-[0.92] tracking-tightest">
-            <AnimatedHeadline text={siteConfig.name} className="text-gradient" delay={0.2} />
-          </h1>
+            {/* Giant name */}
+            <h1 className="font-display text-fluid-mega font-semibold leading-[0.95] tracking-tightest">
+              <AnimatedHeadline text={siteConfig.name} className="text-gradient" delay={0.2} />
+            </h1>
 
-          {/* Rotating value proposition */}
+            {/* Rotating value proposition */}
+            <motion.div
+              variants={fadeUp}
+              className="mt-5 flex min-h-[2.4em] w-full max-w-full items-center justify-center px-2 font-display text-fluid-lg font-medium leading-tight text-ink sm:min-h-[1.8em] sm:text-fluid-xl lg:justify-start lg:px-0"
+            >
+              <RotatingText phrases={HERO_ROTATING} />
+            </motion.div>
+
+            <motion.p
+              variants={fadeUp}
+              className="mt-5 max-w-xl text-fluid-base leading-relaxed text-ink-muted"
+            >
+              Founder &amp; CEO of {siteConfig.company.name} — building scalable apps, modern
+              web systems, SaaS architectures, and premium UI/UX experiences for clients
+              worldwide.
+            </motion.p>
+
+            {/* Skills */}
+            <motion.ul
+              variants={fadeUp}
+              className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-fluid-sm font-medium text-ink-muted lg:justify-start"
+            >
+              {HERO_SKILLS.map((skill, i) => (
+                <li key={skill} className="flex items-center gap-3">
+                  {i > 0 && <span className="h-1 w-1 rounded-full bg-accent-soft/60" />}
+                  {skill}
+                </li>
+              ))}
+            </motion.ul>
+
+            <motion.div
+              variants={fadeUp}
+              className="mt-9 flex flex-wrap items-center justify-center gap-4 lg:justify-start"
+            >
+              <MagneticButton href="/#work" size="lg">
+                View Projects
+                <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+              </MagneticButton>
+              <MagneticButton href="/#contact" variant="secondary" size="lg">
+                Contact Me
+              </MagneticButton>
+            </motion.div>
+          </div>
+
+          {/* RIGHT — large portrait with halos, floating chips, gentle float. */}
           <motion.div
             variants={fadeUp}
-            className="mt-6 flex min-h-[2.4em] w-full max-w-full items-center justify-center px-2 text-center font-display text-fluid-lg font-medium leading-tight text-ink sm:min-h-[1.8em] sm:text-fluid-xl"
+            className="relative mx-auto w-full max-w-sm sm:max-w-md lg:max-w-none"
           >
-            <RotatingText phrases={HERO_ROTATING} />
-          </motion.div>
+            {/* Layered halos — emerald + peach wash behind the photo */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute -inset-8 rounded-[3rem] bg-gradient-to-br from-accent/30 via-accent-blue/20 to-peach/30 opacity-80 blur-3xl"
+            />
+            <div
+              aria-hidden
+              className="pointer-events-none absolute -inset-2 rounded-[3rem] bg-gradient-to-br from-mint/40 via-transparent to-peach/40 blur-2xl"
+            />
 
-          <motion.p
-            variants={fadeUp}
-            className="mt-6 max-w-2xl text-fluid-base leading-relaxed text-ink-muted"
-          >
-            Founder &amp; CEO of {siteConfig.company.name} — building scalable apps, modern
-            web systems, SaaS architectures, and premium UI/UX experiences for clients
-            worldwide.
-          </motion.p>
+            {/* Floating frame */}
+            <motion.div
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+              className="relative"
+            >
+              {/* Photo — no white frame, just a transparent rounded crop so
+                  the portrait floats with only the halos behind it for depth.
+                  The aspect-square parent gives Next/Image fill a concrete box. */}
+              <div className="relative aspect-square overflow-hidden rounded-[2.5rem]">
+                <Image
+                  src="/images/profile/akhil.png"
+                  alt={`${siteConfig.name} — ${siteConfig.title}`}
+                  fill
+                  sizes="(max-width: 640px) 90vw, (max-width: 1024px) 450px, 540px"
+                  className="object-cover drop-shadow-[0_28px_60px_rgba(8,148,115,0.30)]"
+                  priority
+                />
+              </div>
 
-          {/* Skills */}
-          <motion.ul
-            variants={fadeUp}
-            className="mt-7 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-fluid-sm font-medium text-ink-muted"
-          >
-            {HERO_SKILLS.map((skill, i) => (
-              <li key={skill} className="flex items-center gap-3">
-                {i > 0 && <span className="h-1 w-1 rounded-full bg-accent-soft/60" />}
-                {skill}
-              </li>
-            ))}
-          </motion.ul>
+              {/* Floating availability chip — bottom-left. Positions stay
+                  inside or just outside the photo edge so it never clips on
+                  narrow viewports (the page already guards horizontal scroll). */}
+              <div className="absolute -bottom-3 left-2 flex items-center gap-2 rounded-full border border-hairline bg-surface/95 px-3 py-1.5 shadow-glow-sm backdrop-blur-xl sm:-bottom-5 sm:left-6 sm:px-4 sm:py-2">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex h-full w-full rounded-full bg-emerald-500" />
+                </span>
+                <span className="text-fluid-sm font-medium text-ink">Available</span>
+                <span className="hidden text-fluid-sm font-medium text-ink sm:inline">for projects</span>
+              </div>
 
-          <motion.div variants={fadeUp} className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <MagneticButton href="/#work" size="lg">
-              View Projects
-              <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
-            </MagneticButton>
-            <MagneticButton href="/#contact" variant="secondary" size="lg">
-              Contact Me
-            </MagneticButton>
+              {/* Floating stat chip — top-right */}
+              <div className="absolute -right-2 -top-2 flex items-center gap-2 rounded-2xl border border-hairline bg-surface/95 px-3 py-1.5 shadow-glow-sm backdrop-blur-xl sm:-right-4 sm:-top-4 sm:py-2">
+                <span className="font-display text-fluid-lg font-semibold text-gradient">5+</span>
+                <span className="text-fluid-sm text-ink-muted">years</span>
+                <span className="hidden text-fluid-sm text-ink-muted sm:inline">building</span>
+              </div>
+            </motion.div>
           </motion.div>
         </motion.div>
       </Container>

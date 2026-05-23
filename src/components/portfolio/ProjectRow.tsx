@@ -35,9 +35,10 @@ export function ProjectRow({ project, index }: { project: Project; index: number
         className="group grid items-center gap-10 lg:grid-cols-2 lg:gap-16"
         data-cursor="hover"
       >
-        {/* Visual */}
+        {/* Visual — no clipping panel so the mockup's ambient halos can bleed
+            freely onto the page. Hover scale lifts the floating image. */}
         <div className={cn("relative", reversed && "lg:order-2")}>
-          <div className="overflow-hidden rounded-3xl transition-transform duration-500 group-hover:scale-[1.02]">
+          <div className="transition-transform duration-500 ease-out group-hover:scale-[1.025]">
             <ProjectMockup project={project} />
           </div>
         </div>

@@ -19,23 +19,33 @@ export function ProjectMockup({
 }) {
   const isApp = project.platforms.includes("App");
 
-  // Real screenshot path — transparent PNG presented on a tinted glass panel.
+  // Real screenshot path — transparent PNG floats freely on the page with a
+  // soft accent halo behind. No container card, no border, no fill: lets the
+  // product itself be the visual, with depth from the halo + drop shadow.
   if (project.image) {
     return (
       <div className={cn("relative w-full", className)}>
+        {/* Layered ambient halos behind the image for brand-tinted depth. */}
         <div
           className={cn(
-            "absolute -inset-8 rounded-[3rem] bg-gradient-to-br opacity-25 blur-3xl",
+            "pointer-events-none absolute inset-[-4%] -z-[1] rounded-[40%] bg-gradient-to-br opacity-30 blur-[80px]",
             project.accent
           )}
         />
-        <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-hairline bg-gradient-to-br from-mint via-surface to-peach shadow-glow-lg">
+        <div className="pointer-events-none absolute inset-[8%] -z-[1] rounded-[40%] bg-peach/40 blur-[60px]" />
+
+        <div
+          className={cn(
+            "relative",
+            isApp ? "aspect-[5/4]" : "aspect-[16/10]"
+          )}
+        >
           <Image
             src={project.image}
             alt={`${project.title} — product preview`}
             fill
-            sizes="(max-width: 1024px) 100vw, 50vw"
-            className="object-contain p-3 sm:p-5"
+            sizes="(max-width: 1024px) 100vw, 640px"
+            className="object-contain drop-shadow-[0_24px_56px_rgba(8,148,115,0.25)]"
           />
         </div>
       </div>
